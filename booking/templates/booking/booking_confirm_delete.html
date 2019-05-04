@@ -1,0 +1,9 @@
+{% extends 'booking/base.html' %}
+
+{% block content %}
+<form method="post">{% csrf_token %}
+    <p>Er du sikker på du ønsker at slette følgende booking?</p>
+    <p>Navn: {{ booking.name }} ({{ booking.date_from|date:"Y-m-d" }} - {{ booking.date_to|date:"Y-m-d" }})</p>
+    <button type="submit" class="btn btn-danger">Ja</button> <a class="btn btn-success" href="{% url "booking_list" %}">Nej</a>
+</form>
+{% endblock %}
