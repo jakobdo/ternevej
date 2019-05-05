@@ -32,11 +32,13 @@
 
 {% block bodyjs %}
 <script src="{% static "booking/datepicker/js/bootstrap-datepicker.js" %}"></script>
+<script src="{% static "booking/datepicker/locales/bootstrap-datepicker.da.min.js" %}" charset="UTF-8"></script>
 <script>
 $(function(){
     $('.datepicker').datepicker({
         format: "yyyy-mm-dd",
-        autoclose: true
+        autoclose: true,
+        language: 'da'
     });
 })
 </script>
