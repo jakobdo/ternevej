@@ -1,16 +1,12 @@
+{% extends 'booking/base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8" />
-    <title>M/S Ternevej 21</title>
+{% block head %}
+    <link href="{% static "booking/fontawesome/css/all.min.css" %}" rel="stylesheet">
+    <link href="{% static "booking/bootstrap/css/bootstrap.min.css" %}" rel="stylesheet">
 
-    <link rel="stylesheet" href="{% static "booking/fontawesome/css/all.min.css" %}">
-    <link rel="stylesheet" href="{% static "booking/bootstrap/css/bootstrap.min.css" %}">
-
-    <link href="{% static "booking/fullcalendar/core/main.css" %}" rel="stylesheet" />
-    <link href="{% static "booking/fullcalendar/daygrid/main.css" %}" rel="stylesheet" />
-    <link href="{% static "booking/fullcalendar/bootstrap/main.css" %}" rel='stylesheet' />
+    <link href="{% static "booking/fullcalendar/core/main.css" %}" rel="stylesheet">
+    <link href="{% static "booking/fullcalendar/daygrid/main.css" %}" rel="stylesheet">
+    <link href="{% static "booking/fullcalendar/bootstrap/main.css" %}" rel="stylesheet">
 
     <script src="{% static "booking/jquery/jquery-3.4.1.min.js" %}"></script>
     <script src="{% static "booking/fullcalendar/core/main.js" %}"></script>
@@ -18,24 +14,23 @@
     <script src="{% static "booking/fullcalendar/daygrid/main.js" %}"></script>
     <script src="{% static "booking/fullcalendar/bootstrap/main.js" %}"></script>
     <script src="{% static "booking/fullcalendar/interaction/main.js" %}"></script>
-
+{% endblock %}
+{% block content %}
+{% csrf_token %}
+<div class="container">
+    <div id="calendar"></div>
+</div>
+{% endblock %}
+{% block bodyjs %}
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             var calendarEl = document.getElementById("calendar");
 
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 header: {
-                    left: "createEventBtn",
+                    left: "",
                     center: "title",
                     right: "prevYear,prev,today,next,nextYear"
-                },
-                customButtons: {
-                    createEventBtn: {
-                        text: "Opret booking",
-                        click: function() {
-                            window.location = "{% url "booking_create" %}";
-                        }
-                    }
                 },
                 events: "{% url "booking_api" %}",
                 locale: "da",
@@ -105,11 +100,4 @@
         }
 
     </script>
-</head>
-<body>
-{% csrf_token %}
-<div class="container">
-    <div id="calendar"></div>
-</div>
-</body>
-</html>
+{% endblock %}

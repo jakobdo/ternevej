@@ -1,0 +1,21 @@
+{% extends "booking/base.html" %}
+{% load widget_tweaks %}
+
+{% block content %}
+    <div id="lockdown">
+        <h2>Du er der næsten...</h2>
+
+        {% if form %}
+            <form action="" method="post">{% csrf_token %}
+                {{ form.non_field_errors }}
+                <div class="form-group">
+                    {{ form.password.errors }}
+                    <label for="{{ form.password.id_for_label }}">Kodeord:</label>
+                    {{ form.password|add_class:"form-control" }}
+                </div>
+                <button class="btn btn-primary" type="submit">Log ind</button>
+            </form>
+        {% endif %}
+
+    </div>
+{% endblock %}
