@@ -1,12 +1,12 @@
-from datetime import timedelta
+from datetime import timedelta, datetime
 
+from django.db.models import Q
 from django.http import JsonResponse
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render
 from django.urls import reverse, reverse_lazy
 from django.views import View
 from django.views.generic import CreateView, UpdateView, DeleteView
 
-from booking.forms import BookingForm
 from booking.models import Booking
 
 
@@ -39,7 +39,19 @@ class BookingListView(View):
 class BookingApiView(View):
     def get(self, request):
         events = []
-        for booking in Booking.objects.all():
+
+        try:
+            start = request.GET.get("start").split("T")[0]
+            start_date = datetime.strptime(start, "%Y-%m-%d")
+
+            end = request.GET.get("end").split("T")[0]
+            end_date = datetime.strptime(end, "%Y-%m-%d")
+
+            bookings = Booking.objects.filter(Q(date_from__range=(start_date, end_date)) | Q(date_to__range=(start_date, end_date)))
+        except Exception as ex:
+            bookings = Booking.objects.all()
+
+        for booking in bookings:
             events.append(dict(
                 id=booking.id,
                 title=booking.name,
