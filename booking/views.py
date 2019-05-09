@@ -1,3 +1,4 @@
+import random
 from datetime import timedelta, datetime
 
 from django.db.models import Q
@@ -40,6 +41,31 @@ class BookingApiView(View):
     def get(self, request):
         events = []
 
+        colors = [
+            "#e6194B",
+            "#3cb44b",
+            "#ffe119",
+            "#4363d8",
+            "#f58231",
+            "#911eb4",
+            "#42d4f4",
+            "#f032e6",
+            "#bfef45",
+            "#fabebe",
+            "#469990",
+            "#e6beff",
+            "#9A6324",
+            "#fffac8",
+            "#800000",
+            "#aaffc3",
+            "#808000",
+            "#ffd8b1",
+            "#000075",
+            "#a9a9a9",
+            "#ffffff",
+            "#000000"
+        ]
+
         try:
             start = request.GET.get("start").split("T")[0]
             start_date = datetime.strptime(start, "%Y-%m-%d")
@@ -57,6 +83,7 @@ class BookingApiView(View):
                 title=booking.name,
                 start=booking.date_from.strftime("%Y-%m-%d"),
                 end=(booking.date_to + timedelta(days=1)).strftime("%Y-%m-%d"),
-                url=reverse('booking_update', kwargs={'pk': booking.pk})
+                url=reverse('booking_update', kwargs={'pk': booking.pk}),
+                color=random.choice(colors)
             ))
         return JsonResponse(events, safe=False)
