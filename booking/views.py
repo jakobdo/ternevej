@@ -42,12 +42,14 @@ class BookingApiView(View):
         events = []
 
         colors = [
-            "#845EC2",
-            "#D65DB1",
-            "#FF6F91",
-            "#FF9671",
-            "#FFC75F",
-            "#F9F871",
+            '#000000',
+            '#E69F00',
+            '#56B4E9',
+            '#009E73',
+            '#F0E442',
+            '#0072B2',
+            '#D55E00',
+            '#CC79A7',
         ]
 
         try:
@@ -61,13 +63,17 @@ class BookingApiView(View):
         except Exception as ex:
             bookings = Booking.objects.all()
 
-        for booking in bookings:
+        bookings = bookings.order_by("date_from")
+
+        for counter, booking in enumerate(bookings):
+            color_index = counter % len(colors)
+            color = colors[color_index]
             events.append(dict(
                 id=booking.id,
                 title=booking.name,
                 start=booking.date_from.strftime("%Y-%m-%d"),
                 end=(booking.date_to + timedelta(days=1)).strftime("%Y-%m-%d"),
                 url=reverse('booking_update', kwargs={'pk': booking.pk}),
-                color=random.choice(colors)
+                color=color
             ))
         return JsonResponse(events, safe=False)
